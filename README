@@ -1,0 +1,6 @@
+
+
+VoyDemo is a demo app, powered by libVoyager. Alls it does is connects to the nearest Bluetooth OBD device, and starts polling RPM and speed data repeatedly. It shows that data, and other messages to the main screen for the user to see. 
+
+Requires: ELM327 Compatible Bluetooth OBD adapter. 
+
