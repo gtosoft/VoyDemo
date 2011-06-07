@@ -4,3 +4,6 @@ VoyDemo is a demo app, powered by libVoyager. Alls it does is connects to the ne
 
 Requires: ELM327 Compatible Bluetooth OBD adapter. 
 
+Check out this project, along with libVoyager. make sure and add libVoyager as a project library. You may also need to add a linked source folder to the buildpath of VoyDemo that points to the libvoyager/src directory on your local machine. 
+
+
