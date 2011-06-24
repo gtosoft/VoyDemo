@@ -1,8 +1,9 @@
-# Copyright (C) 2010 Brad Hein (GTOSoft).
-# This document may not be modified, copied or distributed, in part or in whole, without written permission from GTOSoft LLC.
+# (C) 2011 libvoyager is licensed under a Creative Commons Attribution-NonCommercial 3.0 Unported License. 
+# Permissions beyond the scope of this license may be available at http://www.gtosoft.com. You can download, 
+# use, modify the code as long as you do not include it as part of commercial software.
 
 # TO verify the schema: 
-# 	rm /tmp/x.db; cat /home/brad/workspace/Dash/assets/schema-dashdb.sql  | grep -v ^\# > /tmp/schema.sql ; cat /tmp/schema.sql | sqlite3 /tmp/x.db
+# 	rm /tmp/x.db; cat schema-dashdb.sql  | grep -v ^\# > /tmp/schema.sql ; cat /tmp/schema.sql | sqlite3 /tmp/x.db
 # 	 	if any errors are encountered, review /tmp/schema.sql. 
 
 # This whole schema gets executed as a single transaction SO MAKE SURE IT IS COMPLETELY ERROR FREE!
@@ -23,7 +24,7 @@ CREATE TABLE userCommand (id INTEGER PRIMARY KEY AUTOINCREMENT, description TEXT
 # For example, store which PIDs are supported by a particular vehicle
 # Also, store specifics about vehicle, such as which networks are available, preferences, etc.
 # We may also store gauge selections here too. 
-DROP TABLE IF EXISTS profiles;
+# DROP TABLE IF EXISTS profiles;
 CREATE TABLE profiles (id INTEGER PRIMARY KEY AUTOINCREMENT, proType TEXT, proSubType TEXT, proKey TEXT, proValue TEXT, timeStamp INTEGER);
 CREATE INDEX idx1_profiles on profiles (proType);
 CREATE INDEX idx2_profiles on profiles (proSubType);
@@ -59,127 +60,156 @@ CREATE INDEX idx2_dp on dataPoint (header);
 
 # Wish this worked, so we could allocate a block for our own purposes... UPDATE "sqlite_sequence" SET seq = 5000 where 'name' = "dataPoint";
 
-INSERT INTO "dataPoint" VALUES(1,'03','514','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkS63BOWijd0IeTwxjiSZgf0pzAPX+J+U3o91VLjSTGhMw==','VIN1OF2','first half of VIN');
-INSERT INTO "dataPoint" VALUES(2,'03','4E1','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkS63BOWijd0IeTwxjiSZgf0pzAPX+J+U3o91VLjSTGhMw==','VIN2OF2','second half of VIN');
-INSERT INTO "dataPoint" VALUES(3,'01','10 00 A0 B0','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTJjfHT4anC9RMJwZRf8aLtmSgka07UChQ42fNNXu6MPQ==','TPMS_TP_FL','Tire Pressure Monitor System, Tire Pressure, Front-Left tire kPaG');
-INSERT INTO "dataPoint" VALUES(4,'01','10 00 A0 B0','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkQbc8kQsSHUGt/XHRM3ds2l7UXZLdFNbL5bQ6M/i7Vy9w==','TPMS_TP_FR','Tire Pressure Monitor System, Tire Pressure, Front-Right tire kPaG');
-INSERT INTO "dataPoint" VALUES(5,'01','10 00 A0 B0','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRQOI3H0sl+ltbkikWmjSstkrFhJr0x/FMUrEpcbU9nKw==','TPMS_TP_RR','Tire Pressure Monitor System, Tire Pressure, Rear-Right tire kPaG');
-INSERT INTO "dataPoint" VALUES(6,'01','10 00 A0 B0','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTPA+vI0luuYhllbddWnVG9npo6Ob1TbVq7Pbi+UcUhGw==','TPMS_TP_RL','Tire Pressure Monitor System, Tire Pressure, Rear-Left tire kPaG');
-INSERT INTO "dataPoint" VALUES(7,'01','10 0C 20 99','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRYXUXVZjjhCMmkeqYKAypF9PHvZOsTLwM65pA1VI9pCA==','TEMP_OUTSIDE','Outdoor Temperature, as seen on the DIC');
-INSERT INTO "dataPoint" VALUES(8,'01','10 05 00 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTYucGi6hBg6Qx0qv20qIL541kGf5O3eVIn57+saBqgOw==','SPEED_AVERAGE','Speed (Average)');
-INSERT INTO "dataPoint" VALUES(9,'01','10 05 00 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRQOI3H0sl+ltbkikWmjSstfGOzeObU9oU7kF/V3NOMuQ==','RPM','RPM');
-INSERT INTO "dataPoint" VALUES(10,'01','10 0A 60 97','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkS63BOWijd0IeTwxjiSZgf0Xn5p4Wzu+7iEtl55PK3xLg==','ONSTAR_DATEYEAR','OnStar current year from GPS');
-INSERT INTO "dataPoint" VALUES(11,'01','10 0A 60 97','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkSNj6HFANXBAo08R56gUgxRr5hDOtCsfyfg9NvEIivOQQ==','ONSTAR_DATEMONTH','OnStar current month from GPS');
-INSERT INTO "dataPoint" VALUES(12,'01','10 0A 60 97','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkQZ78R/j5IzczFGvG2AIGGMhhF3Ivx5MqJI9oiWoWwO9A==','ONSTAR_DATEDAY','OnStar current day of month');
-INSERT INTO "dataPoint" VALUES(13,'01','10 0A 60 97','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkS0G6Hv55gcdxPTtieLNn/IPwIlQEfXrU2N2eHvB70gJg==','ONSTAR_DATEHOUR','OnStar current hour');
-INSERT INTO "dataPoint" VALUES(14,'01','10 0A 60 97','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkS46fUN1jd/PBJkTkhUkmqNk2IFFldyDPisxxX4vuWsMQ==','ONSTAR_DATEMINUTE','OnStar current minute');
-INSERT INTO "dataPoint" VALUES(15,'01','10 0A 60 97','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkQLu3Bzv/3K5mACQ3H9UuaEzQT89dXt485AdyYb0PoCcA==','ONSTAR_DATESECOND','OnStar current seconds');
-INSERT INTO "dataPoint" VALUES(16,'01','10 0A A0 97','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRRWzkyWcpdpaTCtdf6HVUETP5jPAB4DQMCKSuVfG3FdA==','ONSTAR_LATITUDE_VALID','0 If Onstar Latitude reading Is Valid');
-INSERT INTO "dataPoint" VALUES(17,'01','10 0A A0 97','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkS63BOWijd0IeTwxjiSZgf0PoaXzjCxMW1yjPdJ9sXtIQ==','ONSTAR_LATITUDE','OnStar Latitude, in Degrees');
-INSERT INTO "dataPoint" VALUES(18,'01','10 0A A0 97','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRQOI3H0sl+ltbkikWmjSstpIdtBNrubqAKxxsSaZ2zBw==','ONSTAR_LONGITUDE_VALID','0 If Onstar Longitude reading Is Valid');
-INSERT INTO "dataPoint" VALUES(19,'01','10 0A A0 97','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRQOI3H0sl+ltbkikWmjSstAAe1mZBh6pQblqIgpaFFQg==','ONSTAR_LONGITUDE','OnStar Longitude in Degrees');
-INSERT INTO "dataPoint" VALUES(20,'01','10 0A C0 97','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkR0phX2f60Me9pgnyMGrZAGossY52NANrJ8GdnvSCpt9w==','ONSTAR_HEADING','OnStar current heading');
-INSERT INTO "dataPoint" VALUES(21,'01','10 0A C0 97','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTJjfHT4anC9RMJwZRf8aLtbglc9QX8sGX3EGBPQY86ug==','ONSTAR_PRECISION','OnStar validity/precision bits');
-INSERT INTO "dataPoint" VALUES(22,'01','10 0A C0 97','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRQOI3H0sl+ltbkikWmjSst75dWiNREzaWieE8zjFq2RQ==','ONSTAR_SPEED','OnStar current GPS-calculated speed');
-INSERT INTO "dataPoint" VALUES(23,'01','10 0A C0 97','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkQQ0x8d/N9qpJ1jiU6Y8jNK7UXlDEWZGsTFOye/E/xMobc/uDUL8WJagVhrkwrxZJw=','ONSTAR_ELEVATION','OnStar current GPS-calculated elevation in Centimeters');
-INSERT INTO "dataPoint" VALUES(24,'05','030','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRQOI3H0sl+ltbkikWmjSst75dWiNREzaWieE8zjFq2RQ==','BREAK_POSITION','Break Position');
-INSERT INTO "dataPoint" VALUES(25,'05','039','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkShKpJi4lK0akLeP5L9F2xxVcq7JwBtuC/hBdu5bCS7Fg==','ENGINE_TEMP','Engine (ICE) Temperature');
-INSERT INTO "dataPoint" VALUES(26,'05','3C8','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkQBvEELUUADjZ5NFiBOn/IzSdCoJJERQgCyl9iIZHm0PQ==','RPM','Engine RPM');
-INSERT INTO "dataPoint" VALUES(27,'01','10 02 40 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkS63BOWijd0IeTwxjiSZgf0pzAPX+J+U3o91VLjSTGhMw==','VIN1OF2','first half of VIN');
-INSERT INTO "dataPoint" VALUES(28,'01','10 02 60 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkS63BOWijd0IeTwxjiSZgf0pzAPX+J+U3o91VLjSTGhMw==','VIN2OF2','second half of VIN');
-INSERT INTO "dataPoint" VALUES(29,'01','08 00 80 B0','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkS63BOWijd0IeTwxjiSZgf0f/917aGQXmTqY/+Q15fW3g==','FOB_COMMAND','A FOB Command was detected.');
-INSERT INTO "dataPoint" VALUES(30,'03','0C9','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRYXUXVZjjhCMmkeqYKAypFALQkuHZUnk0wTOcO0ieJHg==','RPM','Speed as broadcast on the 11-bit network');
-INSERT INTO "dataPoint" VALUES(31,'03','0C9','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRQOI3H0sl+ltbkikWmjSstr7hd+Zo7/284rjtsv0qefg==','PEDAL_DEPRESSION','Pedal depression, in percent');
-INSERT INTO "dataPoint" VALUES(32,'03','120','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkS63BOWijd0IeTwxjiSZgf0mGpR44LnX4JvSkw6U1YbVg==','ODOMETER','Odometer Reading km');
-INSERT INTO "dataPoint" VALUES(33,'03','12A','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRQOI3H0sl+ltbkikWmjSstr7hd+Zo7/284rjtsv0qefg==','BATTERY_SOC','Battery state of charge percentage');
-INSERT INTO "dataPoint" VALUES(34,'03','12A','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTPA+vI0luuYhllbddWnVG95rBLIwQG15K7neQ/xRSoTA==','VOLTS','Battery Volts');
-INSERT INTO "dataPoint" VALUES(35,'03','19D','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkQBhoPefpDUcMR2ETx0GtVVK7PibFzwztS1Izv6EXuT7g==','GEAR_RATIO_TRANNY','Transmission Gear Ratio');
-INSERT INTO "dataPoint" VALUES(36,'03','1C1','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkR0phX2f60Me9pgnyMGrZAGcwMhmijy5eO7G/zHJBZj59l94CRZaJyqukHqnUUiEHQ=','ENGINE_TORQUE','Engine Torque');
-INSERT INTO "dataPoint" VALUES(37,'03','1E9','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkSEDoH20yppljbRqNXG4k+UG9W82cBGgmPGEx1xWUdRdA==','YAW','Vehicle yaw rate');
-INSERT INTO "dataPoint" VALUES(38,'03','1F5','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkS63BOWijd0IeTwxjiSZgf0bi8fTXxc03tB4M6K8621GA==','TRANNY_CLUTCH_MODE','Tranny clutch mode, 1=transitioning, 2=slip, 3=locked');
-INSERT INTO "dataPoint" VALUES(39,'03','1F5','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkR0phX2f60Me9pgnyMGrZAGc4gWvu/Y+izJElQ42N6HUg==','GEAR_ESTIMATED','Tranny Estimated Gear');
-INSERT INTO "dataPoint" VALUES(40,'03','1F5','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkSNj6HFANXBAo08R56gUgxRr5hDOtCsfyfg9NvEIivOQQ==','GEAR_COMMANDED','Tranny Commanded Gear');
-INSERT INTO "dataPoint" VALUES(41,'03','1F5','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTzWzEexXq5hM1hNwKOX70Zpnj8oKSY+vfAkxalm+ryZQ==','GEAR_SHIFT_POSITION','Tranny gear shifter position');
-INSERT INTO "dataPoint" VALUES(42,'03','2F9','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTJjfHT4anC9RMJwZRf8aLtEr5BjinAnE5OlZvP6Q0EPw==','TEMP_BREAKS','Break Temperature degrees C');
-INSERT INTO "dataPoint" VALUES(43,'03','2F9','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkQbc8kQsSHUGt/XHRM3ds2lSdfJODVLg5fN3a/VcmevPQ==','LOAD_BREAKS','Breaking Load in %');
-INSERT INTO "dataPoint" VALUES(44,'03','2F9','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRQOI3H0sl+ltbkikWmjSstEqTqX2r9w56kgd2T7bHM3A==','ROAD_ROUGHNESS','Road Roughness in Gs between 0 and 1');
-INSERT INTO "dataPoint" VALUES(45,'03','3F9','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkQbc8kQsSHUGt/XHRM3ds2lSdfJODVLg5fN3a/VcmevPQ==','GENERATOR_DUTY_CYCLE','Generator Duty Cycle %');
-INSERT INTO "dataPoint" VALUES(46,'03','3F9','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTPA+vI0luuYhllbddWnVG90yTk3xsGs5Ti/m9m6u51Qg==','ENGINE_COOLFAN_SPEED','Speed of the engine cooling fan %');
-INSERT INTO "dataPoint" VALUES(47,'01','10 06 E0 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTJjfHT4anC9RMJwZRf8aLtmSgka07UChQ42fNNXu6MPQ==','ENGINE_OIL_PRESSURE','Engine Oil Pressure in kPa');
-INSERT INTO "dataPoint" VALUES(48,'01','10 06 E0 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkQbc8kQsSHUGt/XHRM3ds2lf7YEQTng+gtc4xEM+G0ITg==','ENGINE_OIL_TEMP','Engine Oil Temperature in C');
-INSERT INTO "dataPoint" VALUES(49,'01','10 4F 00 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTJjfHT4anC9RMJwZRf8aLtmSgka07UChQ42fNNXu6MPQ==','AC_PRESSURE','A/C high-side Pressure in kPa');
-INSERT INTO "dataPoint" VALUES(50,'01','00 0C 00 99','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRYXUXVZjjhCMmkeqYKAypFgPMxg9oJRChicfw5TrUlOg==','TEMP_OUTSIDE_CORRECTED','The outside temperature, corrected');
-INSERT INTO "dataPoint" VALUES(51,'01','00 0C 00 99','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTJjfHT4anC9RMJwZRf8aLtZAx7veWrKdIT7mz5ncRS4Q==','AC_COMPRESSOR_LOAD','A/C Normalized Load in Liters per minute');
-INSERT INTO "dataPoint" VALUES(52,'01','00 0C 00 99','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRQOI3H0sl+ltbkikWmjSst4dQvdGD4eGMhu4vCQw4C/A==','TEMP_OCCUPANT_FRONT','The temperature in the front of the car');
-INSERT INTO "dataPoint" VALUES(53,'01','00 0C 00 99','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTr15ZTQ7MYRtVYTdvVNZywT6/gVNIRVn+/96F0EAKOqQ==','TEMP_OCCUPANT_BACK','The temperature in the back of the car');
-INSERT INTO "dataPoint" VALUES(54,'01','10 05 E0 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkThyqj3lnVxWB8nnQYW/csRbJEyKv//gKq7ZXt38qK7aQ==','CRUISE_SPEED','Requested cruise control speed');
-INSERT INTO "dataPoint" VALUES(55,'01','10 05 20 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRYXUXVZjjhCMmkeqYKAypFpcfcIjscyOUSky6OwqkHvA==','ENGINE_COOLFAN_SPEED','Engine cooling fan speed %');
-INSERT INTO "dataPoint" VALUES(56,'01','10 05 20 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkSEDoH20yppljbRqNXG4k+UGiX2/7Yee8HUMpOjr/Lk7+jRS0/UBxiO1OVbAvJ7olo=','ENGINE_TORQUE','Actual Engine Torque');
-INSERT INTO "dataPoint" VALUES(57,'01','10 05 20 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTr15ZTQ7MYRtVYTdvVNZywHI41AChFrOFsdHxig1MaYg==','TEMP_COOLANT','Engine coolant temperature in C');
-INSERT INTO "dataPoint" VALUES(58,'01','10 05 20 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkQBhoPefpDUcMR2ETx0GtVVWYbt7Td8iGaUiUcL6nZ0EA==','TEMP_INTAKE','Intake Air Temperature in C');
-INSERT INTO "dataPoint" VALUES(59,'01','10 04 E0 60','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkS63BOWijd0IeTwxjiSZgf0mGpR44LnX4JvSkw6U1YbVg==','ODOMETER','Odometer Reading km');
-INSERT INTO "dataPoint" VALUES(60,'01','10 04 C0 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRYXUXVZjjhCMmkeqYKAypFpcfcIjscyOUSky6OwqkHvA==','FUEL_LEVEL','Fuel level %');
-INSERT INTO "dataPoint" VALUES(61,'01','10 04 C0 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkSEDoH20yppljbRqNXG4k+UrtYmw8KVx7f5ORDjLH9AqA==','FUEL_CONSUMPTION_RATE','Snapshot fuel consumption rate');
-INSERT INTO "dataPoint" VALUES(62,'01','10 04 A0 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkS63BOWijd0IeTwxjiSZgf0IexIHXvnrauNL1XNHLRMSQ==','GEAR_ESTIMATED','Tranny estimated gear.');
-INSERT INTO "dataPoint" VALUES(63,'01','10 04 A0 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRYXUXVZjjhCMmkeqYKAypFH6SCynjYba8zF8gUWjslog==','GEAR_SHIFT_POSITION','Tranny Shifter position.');
-INSERT INTO "dataPoint" VALUES(64,'01','10 04 A0 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTJjfHT4anC9RMJwZRf8aLtFY2Z3f6Tk9Ek1qaLWHjG9A==','TRANNY_OIL_TEMP','Tranny Oil temperature.');
-INSERT INTO "dataPoint" VALUES(65,'01','10 03 00 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRYXUXVZjjhCMmkeqYKAypFC5jd5Y0H8Uu6GVbpdMnPZg==','VOLTS','Battery Voltage Reading');
-INSERT INTO "dataPoint" VALUES(66,'01','10 03 00 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTJjfHT4anC9RMJwZRf8aLtXhNjq/4m+VTeMHJojx1eQw==','BATTERY_SOC','Battery State Of Charge %');
-INSERT INTO "dataPoint" VALUES(67,'03','3F9','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTr15ZTQ7MYRtVYTdvVNZywviZxCWXy5hkVDiGklMcGCg==','ENGINE_OIL_LIFE','Engine oil life remaining %');
-INSERT INTO "dataPoint" VALUES(68,'03','3F9','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkQBhoPefpDUcMR2ETx0GtVVMWnWXKlzIOnBDAqWu0jlGw==','AC_PRESSURE','AC system high-side pressure kPaG');
-INSERT INTO "dataPoint" VALUES(69,'03','4C1','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRYXUXVZjjhCMmkeqYKAypFJA9UpJiPi2YfniKea/61Lw==','BAROMETER','Absolute Atmospheric Barometric Pressure kPa');
-INSERT INTO "dataPoint" VALUES(70,'03','4C1','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTJjfHT4anC9RMJwZRf8aLtFY2Z3f6Tk9Ek1qaLWHjG9A==','TEMP_COOLANT','Coolant Temperature C');
-INSERT INTO "dataPoint" VALUES(71,'03','4C1','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkQbc8kQsSHUGt/XHRM3ds2lf7YEQTng+gtc4xEM+G0ITg==','TEMP_INTAKE','Intake Temperature C');
-INSERT INTO "dataPoint" VALUES(72,'03','4C9','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRYXUXVZjjhCMmkeqYKAypFgLO08v0uPs5J6JUIpxJRVw==','TRANNY_OIL_TEMP','Tranny Oil Temp C');
-INSERT INTO "dataPoint" VALUES(73,'03','4D1','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRYXUXVZjjhCMmkeqYKAypFgLO08v0uPs5J6JUIpxJRVw==','ENGINE_OIL_TEMP','Tranny Oil Temp C');
-INSERT INTO "dataPoint" VALUES(74,'03','4D1','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTJjfHT4anC9RMJwZRf8aLtmSgka07UChQ42fNNXu6MPQ==','ENGINE_OIL_PRESSURE','Engine Oil Pressure kPa');
-INSERT INTO "dataPoint" VALUES(75,'03','4D1','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTPA+vI0luuYhllbddWnVG90yTk3xsGs5Ti/m9m6u51Qg==','FUEL_LEVEL','Fuel Level %');
-INSERT INTO "dataPoint" VALUES(76,'03','52A','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTJjfHT4anC9RMJwZRf8aLtmSgka07UChQ42fNNXu6MPQ==','TPMS_TP_FL','Tire Pressure - Front Left. kPaG');
-INSERT INTO "dataPoint" VALUES(77,'03','52A','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkQbc8kQsSHUGt/XHRM3ds2l7UXZLdFNbL5bQ6M/i7Vy9w==','TPMS_TP_FR','Tire Pressure - Front Right. kPaG');
-INSERT INTO "dataPoint" VALUES(78,'03','52A','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRQOI3H0sl+ltbkikWmjSstkrFhJr0x/FMUrEpcbU9nKw==','TPMS_TP_RR','Tire Pressure - Rear Right. kPaG');
-INSERT INTO "dataPoint" VALUES(79,'03','52A','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTPA+vI0luuYhllbddWnVG9npo6Ob1TbVq7Pbi+UcUhGw==','TPMS_TP_RL','Tire Pressure - Rear Left. kPaG');
-INSERT INTO "dataPoint" VALUES(80,'03','52A','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkQBhoPefpDUcMR2ETx0GtVVjpxGpbdxDmcL8tZ1WQZlmg==','TPMS_TP_SP','Tire Pressure - Spare Tire. kPaG');
-INSERT INTO "dataPoint" VALUES(81,'01','10 00 A0 B0','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkQBhoPefpDUcMR2ETx0GtVVjpxGpbdxDmcL8tZ1WQZlmg==','TPMS_TP_SP','Tire Pressure Monitor System, Tire Pressure, Spare tire kPaG');
-INSERT INTO "dataPoint" VALUES(82,'03','17D','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkThyqj3lnVxWB8nnQYW/csRScpJXzT/snhnrIg3uLmlfRsQErvey3R0AiqsBB9uUbs=','ACCEL_ACTUAL','Actual Vehicle Acceleration in m/s^2');
-INSERT INTO "dataPoint" VALUES(83,'03','0F1','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRYXUXVZjjhCMmkeqYKAypFpcfcIjscyOUSky6OwqkHvA==','PEDAL_POSITION_BRAKE','Position of the break pedal %');
-INSERT INTO "dataPoint" VALUES(84,'03','1F1','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTr15ZTQ7MYRtVYTdvVNZywNQx1aLBUQj4uHQRTFITuGQ==','AC_LOAD_NORMALIZED','Normalized load on AC compressor');
-INSERT INTO "dataPoint" VALUES(85,'03','348','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRRWzkyWcpdpaTCtdf6HVUE5ivYcRk4yzf/ELgxCAQCBw==','SPEED_WHEEL_LD','Speed of left driven wheel kph');
-INSERT INTO "dataPoint" VALUES(86,'03','348','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTlSzedWakIV9HIjdls59gYz/ozAvGkQ9MyqeMt7TslMA==','SPEED_WHEEL_RD','Speed of right driven wheel kph');
-INSERT INTO "dataPoint" VALUES(87,'03','34A','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRRWzkyWcpdpaTCtdf6HVUE5ivYcRk4yzf/ELgxCAQCBw==','SPEED_WHEEL_LND','Speed of left non-driven driven wheel kph');
-INSERT INTO "dataPoint" VALUES(88,'03','34A','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRRWzkyWcpdpaTCtdf6HVUE5ivYcRk4yzf/ELgxCAQCBw==','SPEED_WHEEL_RND','Speed of right non-driven wheel kph');
-INSERT INTO "dataPoint" VALUES(89,'03','3D1','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRYXUXVZjjhCMmkeqYKAypFpcfcIjscyOUSky6OwqkHvA==','THROTTLE_POSITION','Throttle position %');
-INSERT INTO "dataPoint" VALUES(90,'03','4D1','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTzWzEexXq5hM1hNwKOX70ZVGRWT72Y2rkZDrtdCuFc2g==','FUEL_TANK_CAPACITY','Fuel tank capacity in Liters');
-INSERT INTO "dataPoint" VALUES(91,'01','10 03 60 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkSo7B3Hh7ht5tCpVkVFfLmQxVPvJLKt0WQgsNJWJXOMtg==','DOOR_OPEN_DRIVER','True/1 if the driver door is open');
-INSERT INTO "dataPoint" VALUES(92,'01','10 03 60 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkQt/mNOGqa3hcIVaq0x7jvSrlEU0+GB3xGCqrYrYd3jzw==','DOOR_AJAR_DRIVER','True/1 if the driver door is ajar');
-INSERT INTO "dataPoint" VALUES(93,'01','10 03 80 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkSo7B3Hh7ht5tCpVkVFfLmQxVPvJLKt0WQgsNJWJXOMtg==','DOOR_OPEN_PASSENGER','True/1 if the passenger door is open');
-INSERT INTO "dataPoint" VALUES(94,'01','10 03 80 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkQt/mNOGqa3hcIVaq0x7jvSrlEU0+GB3xGCqrYrYd3jzw==','DOOR_AJAR_PASSENGER','True/1 if the passenger door is ajar');
-INSERT INTO "dataPoint" VALUES(95,'01','10 03 A0 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkSo7B3Hh7ht5tCpVkVFfLmQxVPvJLKt0WQgsNJWJXOMtg==','DOOR_OPEN_RL','True/1 if the rear left door is open');
-INSERT INTO "dataPoint" VALUES(96,'01','10 03 A0 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkQt/mNOGqa3hcIVaq0x7jvSrlEU0+GB3xGCqrYrYd3jzw==','DOOR_AJAR_RL','True/1 if the rear left door is ajar');
-INSERT INTO "dataPoint" VALUES(97,'01','10 03 C0 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkSo7B3Hh7ht5tCpVkVFfLmQxVPvJLKt0WQgsNJWJXOMtg==','DOOR_OPEN_RR','True/1 if the rear right door is open');
-INSERT INTO "dataPoint" VALUES(98,'01','10 03 C0 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkQt/mNOGqa3hcIVaq0x7jvSrlEU0+GB3xGCqrYrYd3jzw==','DOOR_AJAR_RR','True/1 if the rear right door is ajar');
-INSERT INTO "dataPoint" VALUES(99,'03','12A','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRd+iuID3+ZmUia7v52Qfa1KlnYAoKkmAMh7uMw8AK5aA==','REAR_OPEN','True if the rear is open (trunk?)');
-INSERT INTO "dataPoint" VALUES(100,'03','12A','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkS/3SK4U7XEMldzNkV46W2E9KHF5V7Q8Ss2kR9wVPrvdQ==','REAR_AJAR','True if the rear is ajar (trunk?)');
-INSERT INTO "dataPoint" VALUES(101,'03','12A','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkSNj6HFANXBAo08R56gUgxRWN5HbAHmKly3mT+fsgF4cg==','TCS_DISABLE','Traction control system disabled flag');
-INSERT INTO "dataPoint" VALUES(102,'03','12A','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkSTJMLehp38wrFkeaKltQtLiDioBi5/YQ3WzIQHP3xPuw==','BREAK_FLUID_LOW','True if the break fluid level is low');
-INSERT INTO "dataPoint" VALUES(103,'03','12A','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTJjfHT4anC9RMJwZRf8aLtnaBWX+9hWZOxEtPOkhdaIQ==','DOOR_OPEN_RR','True/1 if the rear right door is open');
-INSERT INTO "dataPoint" VALUES(104,'03','12A','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTYucGi6hBg6Qx0qv20qIL57R5M5W5OyLPydC4Csvl9gg==','DOOR_AJAR_RR','True/1 if the rear right door is ajar');
-INSERT INTO "dataPoint" VALUES(105,'03','12A','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTlSzedWakIV9HIjdls59gYC9rimkXW4WT/w6d3hwLI9A==','DOOR_OPEN_RL','True/1 if the rear left door is open');
-INSERT INTO "dataPoint" VALUES(106,'03','12A','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkQZ78R/j5IzczFGvG2AIGGMz7gQoEMvoFghzTnSrv8CjQ==','DOOR_AJAR_RL','True/1 if the rear left door is ajar');
-INSERT INTO "dataPoint" VALUES(107,'03','12A','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkThyqj3lnVxWB8nnQYW/csRotoi7pltkXNgZBYhWPjGyQ==','DOOR_OPEN_PASSENGER','True/1 if the passenger door is open');
-INSERT INTO "dataPoint" VALUES(108,'03','12A','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTmsLcQb68lb61C9oINh3nHYHCb/hRJa+K+kKmoZY5srQ==','DOOR_AJAR_PASSENGER','True/1 if the passenger door is ajar');
-INSERT INTO "dataPoint" VALUES(109,'03','12A','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTt5dLzonWAKe5TwybF/fUdg2Vf3/qJbAEz7hUVCLbtJw==','DOOR_OPEN_DRIVER','True/1 if the driver door is open');
-INSERT INTO "dataPoint" VALUES(110,'03','12A','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRcQSsSOr+rrGLKW9NBzKUp2Ul3uUjA69+i83KRlkgwTg==','DOOR_AJAR_DRIVER','True/1 if the driver door is ajar');
-INSERT INTO "dataPoint" VALUES(111,'03','12A','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRCVTYa6FEAXTy1R5e83CqiEvC4cz23Dkl91V3y1KzPOg==','DRIVER_ID','7 if unknown, otherwise ID# of driver 0-6');
-INSERT INTO "dataPoint" VALUES(112,'03','3FD','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRYXUXVZjjhCMmkeqYKAypFEo9rBN/H87ymyUo3c9BexQ==','TEMP_TRANSFER_CASE','Temperature of the transfer case C');
-INSERT INTO "dataPoint" VALUES(113,'03','3FD','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTJjfHT4anC9RMJwZRf8aLt+Rd4BCQf87ze2g+p1nYmTQ==','TEMP_TRANSFER_CLUTCH','Temperature of the transfer case clutch C');
-INSERT INTO "dataPoint" VALUES(114,'03','3E9','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkTsOFUyvnyKp0JTayPq67GpXEHYoDibThJ7nbrWllmtkg==','SPEED_AVERAGE','Average Speed kph');
-INSERT INTO "dataPoint" VALUES(115,'03','3F1','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRYXUXVZjjhCMmkeqYKAypFpcfcIjscyOUSky6OwqkHvA==','GENERATOR_SETPOINT_DUTY_CYCLE','Generator setpoint duty cycle %');
-INSERT INTO "dataPoint" VALUES(116,'03','4C1','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkQt/mNOGqa3hcIVaq0x7jvSrlEU0+GB3xGCqrYrYd3jzw==','ENGINE_WARMED_UP','Engine warmed up');
-INSERT INTO "dataPoint" VALUES(117,'03','1A1','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRO7LnP5dIqbdtbuZILAlUIBokvQ/towZIP/scFwNJz6g==','CYLINDER_DEACTIVATION_MODE','0=all active, 1=in progress, 2=half deactivated 3=reactivation in progress');
-INSERT INTO "dataPoint" VALUES(118,'03','1F1','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkSo7B3Hh7ht5tCpVkVFfLmQkISdYPajMJMUmvttSE4pLw==','SYSTEM_POWER_MODE','system power mode: 0-3: off, accessory, run, crank.');
-INSERT INTO "dataPoint" VALUES(119,'01','10 02 20 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkS63BOWijd0IeTwxjiSZgf0VXBos2cYODxHo6PzBSyQNA==','INTERIOR_DIM_LEVEL','Interior dimming level %');
-INSERT INTO "dataPoint" VALUES(120,'01','10 02 20 40','','46yXXgtZp9TGQV3Zz/iMF/SB2o4CnkciOfVfn6yPnkRYXUXVZjjhCMmkeqYKAypFpcfcIjscyOUSky6OwqkHvA==','INTERIOR_DISPLAY_DIM_LEVEL','Interior display dimming level %');
+INSERT INTO "dataPoint" (id, network, header, sigBytes, formula, dataName, description) VALUES(1,'03','514','','0-63,ASCII','VIN1OF2','first half of VIN');
+INSERT INTO "dataPoint" (id, network, header, sigBytes, formula, dataName, description) VALUES(2,'03','4E1','','0-63,ASCII','VIN2OF2','second half of VIN');
+INSERT INTO "dataPoint" (id, network, header, sigBytes, formula, dataName, description) VALUES(3,'01','10 00 A0 B0','','16-23,MULT4','TPMS_TP_FL','Tire Pressure Monitor System, Tire Pressure, Front-Left tire kPaG');
+INSERT INTO "dataPoint" (id, network, header, sigBytes, formula, dataName, description) VALUES(4,'01','10 00 A0 B0','','24-31,MULT4','TPMS_TP_FR','Tire Pressure Monitor System, Tire Pressure, Front-Right tire kPaG');
+INSERT INTO "dataPoint" (id, network, header, sigBytes, formula, dataName, description) VALUES(5,'01','10 00 A0 B0','','32-39,MULT4','TPMS_TP_RR','Tire Pressure Monitor System, Tire Pressure, Rear-Right tire kPaG');
+INSERT INTO "dataPoint" (id, network, header, sigBytes, formula, dataName, description) VALUES(6,'01','10 00 A0 B0','','40-47,MULT4','TPMS_TP_RL','Tire Pressure Monitor System, Tire Pressure, Rear-Left tire kPaG');
+INSERT INTO "dataPoint" (id, network, header, sigBytes, formula, dataName, description) VALUES(7,'01','10 0C 20 99','','8-15,DICTEMP','TEMP_OUTSIDE','Outdoor Temperature, as seen on the DIC');
+# CAN ID $28
+INSERT INTO "dataPoint" (id, network, header, sigBytes, formula, dataName, description) VALUES(8,'01','10 05 00 40','','17-31,DIV64','SPEED_AVERAGE','Speed (Average)');
+INSERT INTO "dataPoint" (id, network, header, sigBytes, formula, dataName, description) VALUES(9,'01','10 05 00 40','','32-47,DIV4','RPM','RPM');
+# CAN ID $53
+INSERT INTO "dataPoint" (id, network, header, sigBytes, formula, dataName, description) VALUES(10,'01','10 0A 60 97','','0-7,INT','ONSTAR_DATEYEAR','OnStar current year from GPS');
+INSERT INTO "dataPoint" (id, network, header, sigBytes, formula, dataName, description) VALUES(11,'01','10 0A 60 97','','12-15,INT','ONSTAR_DATEMONTH','OnStar current month from GPS');
+INSERT INTO "dataPoint" (id, network, header, sigBytes, formula, dataName, description) VALUES(12,'01','10 0A 60 97','','19-23,INT','ONSTAR_DATEDAY','OnStar current day of month');
+INSERT INTO "dataPoint" (id, network, header, sigBytes, formula, dataName, description) VALUES(13,'01','10 0A 60 97','','26-30,INT','ONSTAR_DATEHOUR','OnStar current hour');
+INSERT INTO "dataPoint" (id, network, header, sigBytes, formula, dataName, description) VALUES(14,'01','10 0A 60 97','','33-38,INT','ONSTAR_DATEMINUTE','OnStar current minute');
+INSERT INTO "dataPoint" (id, network, header, sigBytes, formula, dataName, description) VALUES(15,'01','10 0A 60 97','','41-46,INT','ONSTAR_DATESECOND','OnStar current seconds');
+# CAN ID $55
+INSERT INTO "dataPoint" (id, network, header, sigBytes, formula, dataName, description) VALUES(16,'01','10 0A A0 97','','2-2,BIT','ONSTAR_LATITUDE_VALID','0 If Onstar Latitude reading Is Valid');
+INSERT INTO "dataPoint" (id, network, header, sigBytes, formula, dataName, description) VALUES(17,'01','10 0A A0 97','','0-31,ONSTAR_LAT','ONSTAR_LATITUDE','OnStar Latitude, in Degrees');
+INSERT INTO "dataPoint" (id, network, header, sigBytes, formula, dataName, description) VALUES(18,'01','10 0A A0 97','','32-32,BIT','ONSTAR_LONGITUDE_VALID','0 If Onstar Longitude reading Is Valid');
+INSERT INTO "dataPoint" (id, network, header, sigBytes, formula, dataName, description) VALUES(19,'01','10 0A A0 97','','32-63,ONSTAR_LON','ONSTAR_LONGITUDE','OnStar Longitude in Degrees');
+# CAN ID $56
+INSERT INTO "dataPoint" (id, network, header, sigBytes, formula, dataName, description) VALUES(20,'01','10 0A C0 97','','4-15,DIV10','ONSTAR_HEADING','OnStar current heading');
+INSERT INTO "dataPoint" (id, network, header, sigBytes, formula, dataName, description) VALUES(21,'01','10 0A C0 97','','16-23,INT','ONSTAR_PRECISION','OnStar validity/precision bits');
+INSERT INTO "dataPoint" (id, network, header, sigBytes, formula, dataName, description) VALUES(22,'01','10 0A C0 97','','32-39,INT','ONSTAR_SPEED','OnStar current GPS-calculated speed');
+INSERT INTO "dataPoint" (id, network, header, sigBytes, formula, dataName, description) VALUES(23,'01','10 0A C0 97','','43-63,M=1,B=-100000','ONSTAR_ELEVATION','OnStar current GPS-calculated elevation in Centimeters');
 
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(24,'05','030','','32-39,INT','BREAK_POSITION','Break Position');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(25,'05','039','','00-07,INT','ENGINE_TEMP','Engine (ICE) Temperature');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(26,'05','3C8','','08-23,INT','RPM','Engine RPM');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(27,'01','10 02 40 40','','0-63,ASCII','VIN1OF2','first half of VIN');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(28,'01','10 02 60 40','','0-63,ASCII','VIN2OF2','second half of VIN');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(29,'01','08 00 80 B0','','0-15,HEX','FOB_COMMAND','A FOB Command was detected.');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(30,'03','0C9','','8-23,DIV4',		'RPM',			'Speed as broadcast on the 11-bit network');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(31,'03','0C9','','32-39,MULT2051',	'PEDAL_DEPRESSION','Pedal depression, in percent');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(32,'03','120','','0-31,DIV64',		'ODOMETER',			'Odometer Reading km');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(33,'03','12A','','32-39,MULT2051',	'BATTERY_SOC',		'Battery state of charge percentage');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(34,'03','12A','','40-47,M=0.1&B=3',	'VOLTS',			'Battery Volts');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(35,'03','19D','','56-63,DIV64',		'GEAR_RATIO_TRANNY',		'Transmission Gear Ratio');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(36,'03','1C1','','4-15,M=0.25&B=-200','ENGINE_TORQUE',	'Engine Torque');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(37,'03','1E9','','36-47,M=1/16',		'YAW',				'Vehicle yaw rate');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(38,'03','1F5','','0-2,INT',			'TRANNY_CLUTCH_MODE','Tranny clutch mode, 1=transitioning, 2=slip, 3=locked');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(39,'03','1F5','','4-7,INT',			'GEAR_ESTIMATED',	'Tranny Estimated Gear');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(40,'03','1F5','','12-15,INT',		'GEAR_COMMANDED',	'Tranny Commanded Gear');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(41,'03','1F5','','28-31,INT',		'GEAR_SHIFT_POSITION',	'Tranny gear shifter position');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(42,'03','2F9','','16-23,M=4&B=-40',	'TEMP_BREAKS',	'Break Temperature degrees C');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(43,'03','2F9','','24-31,MULT2051',	'LOAD_BREAKS',	'Breaking Load in %');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(44,'03','2F9','','32-39,MULT205100',	'ROAD_ROUGHNESS',	'Road Roughness in Gs between 0 and 1');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(45,'03','3F9','','24-31,MULT2051',	'GENERATOR_DUTY_CYCLE',	'Generator Duty Cycle %');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(46,'03','3F9','','40-47,MULT2051',	'ENGINE_COOLFAN_SPEED',	'Speed of the engine cooling fan %');
+# CAN ID $37
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(47,'01','10 06 E0 40','','16-23,MULT4',	'ENGINE_OIL_PRESSURE',	'Engine Oil Pressure in kPa');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(48,'01','10 06 E0 40','','24-31,M=1&B=-40',	'ENGINE_OIL_TEMP',	'Engine Oil Temperature in C');
+# CAN ID $278
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(49,'01','10 4F 00 40','','16-23,MULT4',	'AC_PRESSURE',	'A/C high-side Pressure in kPa');
+# CAN ID $60
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(50,'01','00 0C 00 99','','8-15,M=0.5&B=-40',	'TEMP_OUTSIDE_CORRECTED',	'The outside temperature, corrected');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(51,'01','00 0C 00 99','','16-23,DIV10',	'AC_COMPRESSOR_LOAD',	'A/C Normalized Load in Liters per minute');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(52,'01','00 0C 00 99','','32-39,M=0.5&B=-40',	'TEMP_OCCUPANT_FRONT',	'The temperature in the front of the car');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(53,'01','00 0C 00 99','','48-55,M=0.5&B=-40',	'TEMP_OCCUPANT_BACK',	'The temperature in the back of the car');
+# CAN ID $2F
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(54,'01','10 05 E0 40','','20-31,DIV16',	'CRUISE_SPEED',	'Requested cruise control speed');
+# CAN ID $29
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(55,'01','10 05 20 40','','8-15,MULT2051',	'ENGINE_COOLFAN_SPEED',	'Engine cooling fan speed %');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(56,'01','10 05 20 40','','36-47,M=0.25&B=-200',	'ENGINE_TORQUE',	'Actual Engine Torque');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(57,'01','10 05 20 40','','48-55,M=1&B=-40',	'TEMP_COOLANT',	'Engine coolant temperature in C');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(58,'01','10 05 20 40','','56-63,M=1&B=-40',	'TEMP_INTAKE',	'Intake Air Temperature in C');
+# CAN ID $27
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(59,'01','10 04 E0 60','','0-31,DIV64',	'ODOMETER',	'Odometer Reading km');
+# CAN ID $26 
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(60,'01','10 04 C0 40','','8-15,MULT2051',	'FUEL_LEVEL',	'Fuel level %');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(61,'01','10 04 C0 40','','36-47,DIV40',	'FUEL_CONSUMPTION_RATE',	'Snapshot fuel consumption rate');
+# CAN ID $25
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(62,'01','10 04 A0 40','','0-3,INT',	'GEAR_ESTIMATED',	'Tranny estimated gear.');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(63,'01','10 04 A0 40','','8-11,INT',	'GEAR_SHIFT_POSITION',	'Tranny Shifter position.');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(64,'01','10 04 A0 40','','16-23,M=1&B=-40',	'TRANNY_OIL_TEMP',	'Tranny Oil temperature.');
+# CAN ID $18
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(65,'01','10 03 00 40','','8-15,M=0.1&B=3',	'VOLTS',	'Battery Voltage Reading');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(66,'01','10 03 00 40','','16-23,MULT2051',	'BATTERY_SOC',	'Battery State Of Charge %');
+# $3F9
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(67,'03','3F9','','48-55,MULT2051',	'ENGINE_OIL_LIFE',	'Engine oil life remaining %');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(68,'03','3F9','','56-63,MULT14',	'AC_PRESSURE',	'AC system high-side pressure kPaG');
+# $4C1
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(69,'03','4C1','','8-15,M=0.5',		'BAROMETER',	'Absolute Atmospheric Barometric Pressure kPa');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(70,'03','4C1','','16-23,M=1&B=-40',	'TEMP_COOLANT',	'Coolant Temperature C');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(71,'03','4C1','','24-31,M=1&B=-40',	'TEMP_INTAKE',	'Intake Temperature C');
+# $4C9
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(72,'03','4C9','','8-15,M=1&B=-40',	'TRANNY_OIL_TEMP',	'Tranny Oil Temp C');
+# $4D1
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(73,'03','4D1','','8-15,M=1&B=-40',	'ENGINE_OIL_TEMP',	'Tranny Oil Temp C');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(74,'03','4D1','','16-23,MULT4',	'ENGINE_OIL_PRESSURE',	'Engine Oil Pressure kPa');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(75,'03','4D1','','40-47,MULT2051',	'FUEL_LEVEL',	'Fuel Level %');
+# $52A
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(76,'03','52A','','16-23,MULT4',	'TPMS_TP_FL',	'Tire Pressure - Front Left. kPaG');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(77,'03','52A','','24-31,MULT4',	'TPMS_TP_FR',	'Tire Pressure - Front Right. kPaG');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(78,'03','52A','','32-39,MULT4',	'TPMS_TP_RR',	'Tire Pressure - Rear Right. kPaG');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(79,'03','52A','','40-47,MULT4',	'TPMS_TP_RL',	'Tire Pressure - Rear Left. kPaG');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(80,'03','52A','','56-63,MULT4',	'TPMS_TP_SP',	'Tire Pressure - Spare Tire. kPaG');
+# 
+INSERT INTO "dataPoint" (id,network,header,sigBytes,formula,dataName,description)		VALUES(81,'01','10 00 A0 B0','','56-63,MULT4','TPMS_TP_SP','Tire Pressure Monitor System, Tire Pressure, Spare tire kPaG');
+# $17D
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(82,'03','17D','','20-31,SIGNED-DIV100',	'ACCEL_ACTUAL',	'Actual Vehicle Acceleration in m/s^2');
+# $0F1
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(83,'03','0F1','','8-15,MULT2051',	'PEDAL_POSITION_BRAKE',	'Position of the break pedal %');
+# $1F1
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(84,'03','1F1','','48-55,M=1/10',	'AC_LOAD_NORMALIZED',	'Normalized load on AC compressor');
+# $348
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(85,'03','348','','2-15,M=1/32',	'SPEED_WHEEL_LD',	'Speed of left driven wheel kph');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(86,'03','348','','18-31,M=1/32',	'SPEED_WHEEL_RD',	'Speed of right driven wheel kph');
+# $34A
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(87,'03','34A','','2-15,M=1/32',	'SPEED_WHEEL_LND',	'Speed of left non-driven driven wheel kph');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(88,'03','34A','','2-15,M=1/32',	'SPEED_WHEEL_RND',	'Speed of right non-driven wheel kph');
+# $3D1
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(89,'03','3D1','','8-15,MULT2051',	'THROTTLE_POSITION',	'Throttle position %');
+# $4D1
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(90,'03','4D1','','28-39,M=1/8',	'FUEL_TANK_CAPACITY',	'Fuel tank capacity in Liters');
+# Door ajar
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(91,'01','10 03 60 40','','6-6,BIT',	'DOOR_OPEN_DRIVER',	'True/1 if the driver door is open');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(92,'01','10 03 60 40','','7-7,BIT',	'DOOR_AJAR_DRIVER',	'True/1 if the driver door is ajar');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(93,'01','10 03 80 40','','6-6,BIT',	'DOOR_OPEN_PASSENGER',	'True/1 if the passenger door is open');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(94,'01','10 03 80 40','','7-7,BIT',	'DOOR_AJAR_PASSENGER',	'True/1 if the passenger door is ajar');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(95,'01','10 03 A0 40','','6-6,BIT',	'DOOR_OPEN_RL',	'True/1 if the rear left door is open');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(96,'01','10 03 A0 40','','7-7,BIT',	'DOOR_AJAR_RL',	'True/1 if the rear left door is ajar');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(97,'01','10 03 C0 40','','6-6,BIT',	'DOOR_OPEN_RR',	'True/1 if the rear right door is open');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(98,'01','10 03 C0 40','','7-7,BIT',	'DOOR_AJAR_RR',	'True/1 if the rear right door is ajar');
+# 
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(99,'03','12A','','10-10,BIT',	'REAR_OPEN',	'True if the rear is open (trunk?)');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(100,'03','12A','','11-11,BIT',	'REAR_AJAR',	'True if the rear is ajar (trunk?)');
+
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(101,'03','12A','','12-12,BIT',	'TCS_DISABLE',	'Traction control system disabled flag');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(102,'03','12A','','15-15,BIT',	'BREAK_FLUID_LOW',	'True if the break fluid level is low');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(103,'03','12A','','16-16,BIT',	'DOOR_OPEN_RR',	'True/1 if the rear right door is open');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(104,'03','12A','','17-17,BIT',	'DOOR_AJAR_RR',	'True/1 if the rear right door is ajar');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(105,'03','12A','','18-18,BIT',	'DOOR_OPEN_RL',	'True/1 if the rear left door is open');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(106,'03','12A','','19-19,BIT',	'DOOR_AJAR_RL',	'True/1 if the rear left door is ajar');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(107,'03','12A','','20-20,BIT',	'DOOR_OPEN_PASSENGER',	'True/1 if the passenger door is open');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(108,'03','12A','','21-21,BIT',	'DOOR_AJAR_PASSENGER',	'True/1 if the passenger door is ajar');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(109,'03','12A','','22-22,BIT',	'DOOR_OPEN_DRIVER',	'True/1 if the driver door is open');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(110,'03','12A','','23-23,BIT',	'DOOR_AJAR_DRIVER',	'True/1 if the driver door is ajar');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(111,'03','12A','','29-31,HEX',	'DRIVER_ID',	'7 if unknown, otherwise ID# of driver 0-6');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(112,'03','3FD','','8-15,M=1,B=-40',	'TEMP_TRANSFER_CASE',	'Temperature of the transfer case C');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(113,'03','3FD','','16-23,M=1,B=-40',	'TEMP_TRANSFER_CLUTCH',	'Temperature of the transfer case clutch C');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(114,'03','3E9','','1-15,DIV64',	'SPEED_AVERAGE', 'Average Speed kph');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(115,'03','3F1','','8-15,MULT2051',	'GENERATOR_SETPOINT_DUTY_CYCLE', 'Generator setpoint duty cycle %');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(116,'03','4C1','','7-7,BIT',	'ENGINE_WARMED_UP', 'Engine warmed up');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(117,'03','1A1','','14-15,INT',	'CYLINDER_DEACTIVATION_MODE', '0=all active, 1=in progress, 2=half deactivated 3=reactivation in progress');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(118,'03','1F1','','6-7,INT',	'SYSTEM_POWER_MODE', 'system power mode: 0-3: off, accessory, run, crank.');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(119,'01','10 02 20 40','','0-7,MULT2051',	'INTERIOR_DIM_LEVEL', 'Interior dimming level %');
+INSERT INTO "dataPoint"	(id,network,header,sigBytes,formula,dataName,description) 		VALUES(120,'01','10 02 20 40','','8-15,MULT2051',	'INTERIOR_DISPLAY_DIM_LEVEL', 'Interior display dimming level %');
 
 # one record per ELM response, which can contain multiple responses either from multiple ECUs or the same ECU (such as the case of a long message split across multiple frames). 
 DROP TABLE IF EXISTS obdRequest;
