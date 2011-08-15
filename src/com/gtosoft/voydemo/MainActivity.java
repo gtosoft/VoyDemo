@@ -14,6 +14,10 @@ import com.gtosoft.libvoyager.session.OBD2Session;
 import com.gtosoft.libvoyager.util.EasyTime;
 import com.gtosoft.libvoyager.util.EventCallback;
 import com.gtosoft.libvoyager.util.GeneralStats;
+import com.gtosoft.libvoyager.util.OOBMessageTypes;
+// Thanks Lincoln :)
+//import static com.gtosoft.libvoyager.util.OOBMessageTypes.*;
+
 
 public class MainActivity extends Activity {
 	// we'll use this handler to post screen related updates to the main thread. 
@@ -219,7 +223,7 @@ public class MainActivity extends Activity {
 			msg ("(OOB Message) " + dataName + "=" + dataValue);
 			
 			// state change?
-			if (dataName.equals(HybridSession.OOBMessageTypes.IO_STATE_CHANGE)) {
+			if (dataName.equals(OOBMessageTypes.IO_STATE_CHANGE)) {
 				int newState = 0;
 				try {
 					newState = Integer.valueOf(dataValue);
@@ -230,7 +234,7 @@ public class MainActivity extends Activity {
 			}// end of "if this was a io state change". 
 			
 			// session state change? 
-			if (dataName.equals(HybridSession.OOBMessageTypes.SESSION_STATE_CHANGE)) {
+			if (dataName.equals(OOBMessageTypes.SESSION_STATE_CHANGE)) {
 				int newState = 0;
 				
 				// convert from string to integer. 
