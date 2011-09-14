@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ai:chart xmlns:ai="http://www.artfulbits.com/android/aiCharts" linewidth="1">
+	<ai:area>
+		<area.xaxis grid_visible="false" labels_visible="false" title="x"/>
+		<area.yaxis grid_visible="false" labels_visible="false" title="y"/>
+	</ai:area>
+	<ai:series type="Line" points="0, 60, 40, 100"/>
+	<ai:title text="Title" dock="Top"/>
+</ai:chart>
