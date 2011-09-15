@@ -35,7 +35,7 @@ public class ChartAdapter extends ArrayAdapter<ChartView> {
 			chartviewlayout = new LinearLayout(getContext());
 			String inflater = Context.LAYOUT_INFLATER_SERVICE;
 			LayoutInflater vi = (LayoutInflater) getContext().getSystemService(inflater);
-			msg ("inflating...");
+//			msg ("inflating...");
 			vi.inflate(resource, chartviewlayout, true);
 			
 		} else{
@@ -43,6 +43,11 @@ public class ChartAdapter extends ArrayAdapter<ChartView> {
 			// re-use existing list item. 
 			chartviewlayout = (LinearLayout) convertView;
 		}
+		
+		
+		// ChartView c = (ChartView) chartviewlayout.getChildAt(2);
+		// TODO: bring this chart to life. 
+		
 		
 		return chartviewlayout;
 		
