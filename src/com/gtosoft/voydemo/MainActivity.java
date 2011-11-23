@@ -50,9 +50,9 @@ public class MainActivity extends Activity {
 	
 	String mBTPeerAddr = "";
 	
-	ChartAdapter chartAdapter;
+//	ChartAdapter chartAdapter;
 	
-	List<ChartView> chartArray = new ArrayList<ChartView>();
+//	List<ChartView> chartArray = new ArrayList<ChartView>();
 	
 	/** Called when the activity is first created. */
     @Override
@@ -66,126 +66,126 @@ public class MainActivity extends Activity {
         aHelper.registerChosenDeviceCallback(chosenCallback);
         // in the onResume method we will make the call to ActivityHelper to actually kick off the bluetooth discovery.
         
-        chartAdapter = new ChartAdapter(this, R.layout.chartlistitem, chartArray);
+//        chartAdapter = new ChartAdapter(this, R.layout.chartlistitem, chartArray);
         
         ListView lv = (ListView) findViewById(R.id.lvCharts);
-        lv.setAdapter(chartAdapter);
+//        lv.setAdapter(chartAdapter);
     }
     
-    private boolean doesChartExist (String title) {
-    	for (ChartView c : chartArray) {
-			if (c.getTitles().get(0).getText().equals(title)) {
-				return true;
-			}
-		}
-    	
-    	return false;
-    }
+//    private boolean doesChartExist (String title) {
+//    	for (ChartView c : chartArray) {
+//			if (c.getTitles().get(0).getText().equals(title)) {
+//				return true;
+//			}
+//		}
+//    	
+//    	return false;
+//    }
+//
+//    private ChartView addChart (String title) {
+//    	msg ("Adding chart with title " + title);
+//    	ChartView c = new ChartView(this,R.xml.shortchart);
+//    	
+//    	setXYTitles(c, "X", "Y", title);
+//    	clearAllGraphPoints(c);
+//    	
+//        chartArray.add(c);
+//        
+//        return c;
+//    }
 
-    private ChartView addChart (String title) {
-    	msg ("Adding chart with title " + title);
-    	ChartView c = new ChartView(this,R.xml.shortchart);
-    	
-    	setXYTitles(c, "X", "Y", title);
-    	clearAllGraphPoints(c);
-    	
-        chartArray.add(c);
-        
-        return c;
-    }
-
-    /**
-     * Looks for chart with given title and returns it. Otherwise returns null. 
-     * @param title
-     * @return
-     */
-    private ChartView getChartByTitle (String title) {
-    	for (ChartView c : chartArray) {
-			if (c.getTitles().get(0).getText().equals(title)) {
-				return c;
-			}
-		}
-
-    	// otherwise, create it!
-    	return addChart(title);
-    	
-    }
+//    /**
+//     * Looks for chart with given title and returns it. Otherwise returns null. 
+//     * @param title
+//     * @return
+//     */
+//    private ChartView getChartByTitle (String title) {
+//    	for (ChartView c : chartArray) {
+//			if (c.getTitles().get(0).getText().equals(title)) {
+//				return c;
+//			}
+//		}
+//
+//    	// otherwise, create it!
+//    	return addChart(title);
+//    	
+//    }
     
-    private void setXYTitles (final ChartView cv, final String newXTitle, final String newYTitle, final String newGraphTitle) {
-        muiHandler.post(new Runnable () {
-                public void run () {
-                        cv.getSeries().get(0).getActualXAxis().setTitle(newXTitle);
-                        cv.getSeries().get(0).getActualYAxis().setTitle(newYTitle);
-                        cv.getSeries().get(0).getActualYAxis().setLabelsMode(LabelsMode.RangeLabels);
-                        cv.getSeries().get(0).getActualYAxis().setGridVisible(true);
-                        cv.getSeries().get(0).getActualYAxis().setShowLabels(true);
-                        cv.getTitles().get(0).setText(newGraphTitle);
-                }// end of run
-        });// end of post
-    }// end of setXYTitles
+//    private void setXYTitles (final ChartView cv, final String newXTitle, final String newYTitle, final String newGraphTitle) {
+//        muiHandler.post(new Runnable () {
+//                public void run () {
+//                        cv.getSeries().get(0).getActualXAxis().setTitle(newXTitle);
+//                        cv.getSeries().get(0).getActualYAxis().setTitle(newYTitle);
+//                        cv.getSeries().get(0).getActualYAxis().setLabelsMode(LabelsMode.RangeLabels);
+//                        cv.getSeries().get(0).getActualYAxis().setGridVisible(true);
+//                        cv.getSeries().get(0).getActualYAxis().setShowLabels(true);
+//                        cv.getTitles().get(0).setText(newGraphTitle);
+//                }// end of run
+//        });// end of post
+//    }// end of setXYTitles
     
-    private void addPointToGraph (final ChartView cv, final double X, final double Y) {
-        final ChartPoint point = new ChartPoint(X, Y);
-        
-
-        // post it to the UI thread.
-        muiHandler.post(new Runnable () {
-                public void run () {
-                        //cv.getSeries().get(0).getArea().
-                        cv.getSeries().get(0).getPoints().add(point);
-                        
-                        // scroll if necessary.
-                        int numPoints = cv.getSeries().get(0).getPoints().size();
-                        // remove the leftmost point. This has the affect of scrolling...
-                        if (numPoints > 100) {
-                                cv.getSeries().get(0).getPoints().removeAt(0);
-                                cv.getSeries().get(0).getActualXAxis().getScale().setMinimum(X - 100);
-                                cv.getSeries().get(0).getActualXAxis().getScale().setMaximum(X);
-                        }// end of scroll check. 
-                }// end of run
-        }); // end of post
-    }// end of addPointToGraph...
+//    private void addPointToGraph (final ChartView cv, final double X, final double Y) {
+//        final ChartPoint point = new ChartPoint(X, Y);
+//        
+//
+//        // post it to the UI thread.
+//        muiHandler.post(new Runnable () {
+//                public void run () {
+//                        //cv.getSeries().get(0).getArea().
+//                        cv.getSeries().get(0).getPoints().add(point);
+//                        
+//                        // scroll if necessary.
+//                        int numPoints = cv.getSeries().get(0).getPoints().size();
+//                        // remove the leftmost point. This has the affect of scrolling...
+//                        if (numPoints > 100) {
+//                                cv.getSeries().get(0).getPoints().removeAt(0);
+//                                cv.getSeries().get(0).getActualXAxis().getScale().setMinimum(X - 100);
+//                                cv.getSeries().get(0).getActualXAxis().getScale().setMaximum(X);
+//                        }// end of scroll check. 
+//                }// end of run
+//        }); // end of post
+//    }// end of addPointToGraph...
     
     
 
-    private void addPointToGraphSimple(final String title, final double Y) {
-    	
-    	if (doesChartExist(title) == false) {
-    		muiHandler.post(new Runnable () {
-    			public void run () {
-    				addChart(title);
-    				msg ("Added chart " + title + " in background.");
-    			}
-    		});
-    		EasyTime.safeSleep(5000);
-    	}
-
-    	ChartView cv = getChartByTitle(title);
-    	
-    	if (cv == null) {
-    		msg ("Chart not found! title=" + title);
-    		return;
-    	}
-    	
-    	double X = 0;
-
-    	// see if there's already an X point, if so, add one to it. 
-    	try {
-    		int numpoints = cv.getSeries().get(0).getPoints().size();
-			X = cv.getSeries().get(0).getPoints().get(numpoints-1).getX() + 1;
-		} catch (Exception e) {
-			msg ("Error getting last X for chart " + title);
-			// in this case we fall back on default X. 
-		}
-        msg ("Adding point (" + X + "," + Y + ") to chart " + title);
-    	addPointToGraph(cv, X, Y);
-    	
-    	muiHandler.post(new Runnable () {
-    		public void run () {
-    			chartAdapter.notifyDataSetChanged();
-    		}
-    	});
-    }
+//    private void addPointToGraphSimple(final String title, final double Y) {
+//    	
+//    	if (doesChartExist(title) == false) {
+//    		muiHandler.post(new Runnable () {
+//    			public void run () {
+//    				addChart(title);
+//    				msg ("Added chart " + title + " in background.");
+//    			}
+//    		});
+//    		EasyTime.safeSleep(5000);
+//    	}
+//
+//    	ChartView cv = getChartByTitle(title);
+//    	
+//    	if (cv == null) {
+//    		msg ("Chart not found! title=" + title);
+//    		return;
+//    	}
+//    	
+//    	double X = 0;
+//
+//    	// see if there's already an X point, if so, add one to it. 
+//    	try {
+//    		int numpoints = cv.getSeries().get(0).getPoints().size();
+//			X = cv.getSeries().get(0).getPoints().get(numpoints-1).getX() + 1;
+//		} catch (Exception e) {
+//			msg ("Error getting last X for chart " + title);
+//			// in this case we fall back on default X. 
+//		}
+//        msg ("Adding point (" + X + "," + Y + ") to chart " + title);
+//    	addPointToGraph(cv, X, Y);
+//    	
+//    	muiHandler.post(new Runnable () {
+//    		public void run () {
+//    			chartAdapter.notifyDataSetChanged();
+//    		}
+//    	});
+//    }
 
     
     
@@ -365,7 +365,7 @@ public class MainActivity extends Activity {
 			
 			msg ("(DP Arrived) " + DPN + "=" + sDecodedData);
 			
-			addPointToGraphSimple(DPN, getPrimaryDPNValue(sDecodedData));
+//			addPointToGraphSimple(DPN, getPrimaryDPNValue(sDecodedData));
 			
 			//			if (DPN.equals("SPEED")) {
 			//				addPointToSpeedGraph(sDecodedData);
