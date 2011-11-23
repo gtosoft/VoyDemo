@@ -51,7 +51,6 @@ public class MainActivity extends Activity {
 	String mBTPeerAddr = "";
 	
 //	ChartAdapter chartAdapter;
-	
 //	List<ChartView> chartArray = new ArrayList<ChartView>();
 	
 	/** Called when the activity is first created. */
@@ -72,124 +71,7 @@ public class MainActivity extends Activity {
 //        lv.setAdapter(chartAdapter);
     }
     
-//    private boolean doesChartExist (String title) {
-//    	for (ChartView c : chartArray) {
-//			if (c.getTitles().get(0).getText().equals(title)) {
-//				return true;
-//			}
-//		}
-//    	
-//    	return false;
-//    }
-//
-//    private ChartView addChart (String title) {
-//    	msg ("Adding chart with title " + title);
-//    	ChartView c = new ChartView(this,R.xml.shortchart);
-//    	
-//    	setXYTitles(c, "X", "Y", title);
-//    	clearAllGraphPoints(c);
-//    	
-//        chartArray.add(c);
-//        
-//        return c;
-//    }
 
-//    /**
-//     * Looks for chart with given title and returns it. Otherwise returns null. 
-//     * @param title
-//     * @return
-//     */
-//    private ChartView getChartByTitle (String title) {
-//    	for (ChartView c : chartArray) {
-//			if (c.getTitles().get(0).getText().equals(title)) {
-//				return c;
-//			}
-//		}
-//
-//    	// otherwise, create it!
-//    	return addChart(title);
-//    	
-//    }
-    
-//    private void setXYTitles (final ChartView cv, final String newXTitle, final String newYTitle, final String newGraphTitle) {
-//        muiHandler.post(new Runnable () {
-//                public void run () {
-//                        cv.getSeries().get(0).getActualXAxis().setTitle(newXTitle);
-//                        cv.getSeries().get(0).getActualYAxis().setTitle(newYTitle);
-//                        cv.getSeries().get(0).getActualYAxis().setLabelsMode(LabelsMode.RangeLabels);
-//                        cv.getSeries().get(0).getActualYAxis().setGridVisible(true);
-//                        cv.getSeries().get(0).getActualYAxis().setShowLabels(true);
-//                        cv.getTitles().get(0).setText(newGraphTitle);
-//                }// end of run
-//        });// end of post
-//    }// end of setXYTitles
-    
-//    private void addPointToGraph (final ChartView cv, final double X, final double Y) {
-//        final ChartPoint point = new ChartPoint(X, Y);
-//        
-//
-//        // post it to the UI thread.
-//        muiHandler.post(new Runnable () {
-//                public void run () {
-//                        //cv.getSeries().get(0).getArea().
-//                        cv.getSeries().get(0).getPoints().add(point);
-//                        
-//                        // scroll if necessary.
-//                        int numPoints = cv.getSeries().get(0).getPoints().size();
-//                        // remove the leftmost point. This has the affect of scrolling...
-//                        if (numPoints > 100) {
-//                                cv.getSeries().get(0).getPoints().removeAt(0);
-//                                cv.getSeries().get(0).getActualXAxis().getScale().setMinimum(X - 100);
-//                                cv.getSeries().get(0).getActualXAxis().getScale().setMaximum(X);
-//                        }// end of scroll check. 
-//                }// end of run
-//        }); // end of post
-//    }// end of addPointToGraph...
-    
-    
-
-//    private void addPointToGraphSimple(final String title, final double Y) {
-//    	
-//    	if (doesChartExist(title) == false) {
-//    		muiHandler.post(new Runnable () {
-//    			public void run () {
-//    				addChart(title);
-//    				msg ("Added chart " + title + " in background.");
-//    			}
-//    		});
-//    		EasyTime.safeSleep(5000);
-//    	}
-//
-//    	ChartView cv = getChartByTitle(title);
-//    	
-//    	if (cv == null) {
-//    		msg ("Chart not found! title=" + title);
-//    		return;
-//    	}
-//    	
-//    	double X = 0;
-//
-//    	// see if there's already an X point, if so, add one to it. 
-//    	try {
-//    		int numpoints = cv.getSeries().get(0).getPoints().size();
-//			X = cv.getSeries().get(0).getPoints().get(numpoints-1).getX() + 1;
-//		} catch (Exception e) {
-//			msg ("Error getting last X for chart " + title);
-//			// in this case we fall back on default X. 
-//		}
-//        msg ("Adding point (" + X + "," + Y + ") to chart " + title);
-//    	addPointToGraph(cv, X, Y);
-//    	
-//    	muiHandler.post(new Runnable () {
-//    		public void run () {
-//    			chartAdapter.notifyDataSetChanged();
-//    		}
-//    	});
-//    }
-
-    
-    
-    
     @Override
     protected void onResume() {
     	super.onResume();
@@ -212,8 +94,6 @@ public class MainActivity extends Activity {
 
         return true;
     }
-    
-    
 
     /**
      * Either connects to last known device, or performs a discovery to find nearby OBD devices. 
@@ -231,19 +111,7 @@ public class MainActivity extends Activity {
         }
     }
     
-    @Override
-    protected void onPause() {
-    	super.onPause();
-    };
-    
-    protected void onDestroy() {
-    	super.onDestroy();
-    	
-    	// give hs a chance to properly close the network/bluetooth link. 
-    	if (hs != null) hs.shutdown();
-    };
 
-    
     /** 
      * libVoyager can do the BT discovery and device choosing for you. When it finds/chooses a device  it runs the device chosen callback.
      * This method defines what to do when a new device is found.  
@@ -259,6 +127,7 @@ public class MainActivity extends Activity {
     	
     };
 
+    
     /**
      * This method gets called by the broadcast receiver, for bluetooth devices which are "OBD" devices. 
      * This takes care of any necessary actions to open a connection to the specified device. 
@@ -299,6 +168,47 @@ public class MainActivity extends Activity {
   	  return true;
     }
 
+    int mLastIOState = 1234;
+    private void ioStateChanged (int newState) {
+    	
+    	// Avoid non-events where iostateChanged is fired but no state change actually occurred. 
+    	if (newState == mLastIOState) {
+    		return;
+    	} else {
+        	mLastIOState = newState;
+    	}
+
+    	
+    	// Did bluetooth just establish connection? If so then kick off a session detection to see what we're connected to. 
+    	if (newState == 1) {
+    		// Bluetooth just connected, so kick off a thread that does network detection and prepares the hybridsession class for use. 
+    	  	String peername = getStats().getStat("hs.ebt.peerName");
+    	  	String peermac = getStats().getStat("hs.ebt.peerMAC");
+    	  	msg ("Detecting capabilities of device " + peermac + "(" + peername + ")");
+//    		msg (getStats().getAllStatsAsString());
+    		detectSessionInBackground();
+    	} else {
+    		// Bluetooth just disconnected. ELMBT will try to reconnect a preset number of times, at a preset interval. 
+    	}
+    }
+
+    
+    
+
+    @Override
+    protected void onPause() {
+    	super.onPause();
+    };
+    
+    protected void onDestroy() {
+    	super.onDestroy();
+    	
+    	// give hs a chance to properly close the network/bluetooth link. 
+    	if (hs != null) hs.shutdown();
+    };
+
+    
+
     
     /**
      * Kicks off an asynchronous thread which does network/hardware detection via the hybridSession class. 
@@ -333,28 +243,6 @@ public class MainActivity extends Activity {
     	}.start();
     }
     
-    int mLastIOState = 1234;
-    private void ioStateChanged (int newState) {
-    	
-    	// Avoid non-events where iostateChanged is fired but no state change actually occurred. 
-    	if (newState == mLastIOState) {
-    		return;
-    	} else {
-        	mLastIOState = newState;
-    	}
-
-    	
-    	if (newState == 1) {
-    		// Bluetooth just connected, so kick off a thread that does network detection and prepares the hybridsession class for use. 
-    	  	String peername = getStats().getStat("hs.ebt.peerName");
-    	  	String peermac = getStats().getStat("hs.ebt.peerMAC");
-    	  	msg ("Detecting capabilities of device " + peermac + "(" + peername + ")");
-//    		msg (getStats().getAllStatsAsString());
-    		detectSessionInBackground();
-    	} else {
-    		// Bluetooth just disconnected. ELMBT will try to reconnect a preset number of times, at a preset interval. 
-    	}
-    }
     
     /**
      * Define what action the hybridsession should take as it decodes data from the OBD network. 
@@ -364,16 +252,6 @@ public class MainActivity extends Activity {
 		public void onDPArrived(String DPN, String sDecodedData, int iDecodedData) {
 			
 			msg ("(DP Arrived) " + DPN + "=" + sDecodedData);
-			
-//			addPointToGraphSimple(DPN, getPrimaryDPNValue(sDecodedData));
-			
-			//			if (DPN.equals("SPEED")) {
-			//				addPointToSpeedGraph(sDecodedData);
-			//			}
-			//
-			//			if (DPN.equals("RPM")) {
-			//				addPointToRPMGraph(sDecodedData);
-			//			}
 
 		}// end of onDPArrived. 
 	};// end of eventcallback def. 
@@ -396,7 +274,7 @@ public class MainActivity extends Activity {
 				}
 			}// end of "if this was a io state change". 
 
-			// Failed Bluetooth connect? 
+			// Bluetooth unable to connect to peer? 
 			if (dataName.equals(OOBMessageTypes.BLUETOOTH_FAILED_CONNECT)) {
 				
 				if (dataValue.equals("0")) {
@@ -495,8 +373,123 @@ public class MainActivity extends Activity {
 }
 
 	
+
+//  private boolean doesChartExist (String title) {
+//	for (ChartView c : chartArray) {
+//		if (c.getTitles().get(0).getText().equals(title)) {
+//			return true;
+//		}
+//	}
+//	
+//	return false;
+//}
+//
+//private ChartView addChart (String title) {
+//	msg ("Adding chart with title " + title);
+//	ChartView c = new ChartView(this,R.xml.shortchart);
+//	
+//	setXYTitles(c, "X", "Y", title);
+//	clearAllGraphPoints(c);
+//	
+//    chartArray.add(c);
+//    
+//    return c;
+//}
+
+///**
+// * Looks for chart with given title and returns it. Otherwise returns null. 
+// * @param title
+// * @return
+// */
+//private ChartView getChartByTitle (String title) {
+//	for (ChartView c : chartArray) {
+//		if (c.getTitles().get(0).getText().equals(title)) {
+//			return c;
+//		}
+//	}
+//
+//	// otherwise, create it!
+//	return addChart(title);
+//	
+//}
+
+//private void setXYTitles (final ChartView cv, final String newXTitle, final String newYTitle, final String newGraphTitle) {
+//    muiHandler.post(new Runnable () {
+//            public void run () {
+//                    cv.getSeries().get(0).getActualXAxis().setTitle(newXTitle);
+//                    cv.getSeries().get(0).getActualYAxis().setTitle(newYTitle);
+//                    cv.getSeries().get(0).getActualYAxis().setLabelsMode(LabelsMode.RangeLabels);
+//                    cv.getSeries().get(0).getActualYAxis().setGridVisible(true);
+//                    cv.getSeries().get(0).getActualYAxis().setShowLabels(true);
+//                    cv.getTitles().get(0).setText(newGraphTitle);
+//            }// end of run
+//    });// end of post
+//}// end of setXYTitles
+
+//private void addPointToGraph (final ChartView cv, final double X, final double Y) {
+//    final ChartPoint point = new ChartPoint(X, Y);
+//    
+//
+//    // post it to the UI thread.
+//    muiHandler.post(new Runnable () {
+//            public void run () {
+//                    //cv.getSeries().get(0).getArea().
+//                    cv.getSeries().get(0).getPoints().add(point);
+//                    
+//                    // scroll if necessary.
+//                    int numPoints = cv.getSeries().get(0).getPoints().size();
+//                    // remove the leftmost point. This has the affect of scrolling...
+//                    if (numPoints > 100) {
+//                            cv.getSeries().get(0).getPoints().removeAt(0);
+//                            cv.getSeries().get(0).getActualXAxis().getScale().setMinimum(X - 100);
+//                            cv.getSeries().get(0).getActualXAxis().getScale().setMaximum(X);
+//                    }// end of scroll check. 
+//            }// end of run
+//    }); // end of post
+//}// end of addPointToGraph...
+
+
+
+//private void addPointToGraphSimple(final String title, final double Y) {
+//	
+//	if (doesChartExist(title) == false) {
+//		muiHandler.post(new Runnable () {
+//			public void run () {
+//				addChart(title);
+//				msg ("Added chart " + title + " in background.");
+//			}
+//		});
+//		EasyTime.safeSleep(5000);
+//	}
+//
+//	ChartView cv = getChartByTitle(title);
+//	
+//	if (cv == null) {
+//		msg ("Chart not found! title=" + title);
+//		return;
+//	}
+//	
+//	double X = 0;
+//
+//	// see if there's already an X point, if so, add one to it. 
+//	try {
+//		int numpoints = cv.getSeries().get(0).getPoints().size();
+//		X = cv.getSeries().get(0).getPoints().get(numpoints-1).getX() + 1;
+//	} catch (Exception e) {
+//		msg ("Error getting last X for chart " + title);
+//		// in this case we fall back on default X. 
+//	}
+//    msg ("Adding point (" + X + "," + Y + ") to chart " + title);
+//	addPointToGraph(cv, X, Y);
+//	
+//	muiHandler.post(new Runnable () {
+//		public void run () {
+//			chartAdapter.notifyDataSetChanged();
+//		}
+//	});
+//}
+
 	
 	
 	
-	
-}
+} // end of class.
