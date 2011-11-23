@@ -4,6 +4,17 @@
 
 	<ListView android:id="@+id/lvCharts" android:layout_height="200sp" android:layout_width="fill_parent"/>
 
+	<com.artfulbits.aiCharts.ChartView 
+		android:id="@+id/cvBig"
+		android:background="@android:drawable/alert_dark_frame" 
+		chart="@xml/shortchart"                                
+		android:layout_below="@id/tv1" 
+		android:layout_width="fill_parent" 
+		android:layout_height="200px"
+	/>
+
+
+
 	<ScrollView	android:id="@+id/sv1" android:layout_height="wrap_content" android:layout_width="fill_parent">
 		<TextView android:id="@+id/tvMessages" android:layout_width="fill_parent"  android:layout_height="wrap_content" android:text="" />
 	</ScrollView>

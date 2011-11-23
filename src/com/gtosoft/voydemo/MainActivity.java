@@ -104,9 +104,11 @@ public class MainActivity extends Activity {
         // Connect to last known device if possible. Otherwise do the usual bluetooth scan.  
         if (lastmac.length() == 17) {
         	if (DEBUG) msg ("Using last known device MAC!");
+        	// if we setupSession ourself, we are skipping the activityhelper conveniences of discovery/etc. 
         	setupSession(lastmac);
         } else {
 	        if (DEBUG) msg ("No preferred device has been selected. Scanning...");
+	        // let the activityhelper find the device and fire off the "chosenCallback" when it finds one. 
 	        aHelper.startDiscovering();
         }
     }
