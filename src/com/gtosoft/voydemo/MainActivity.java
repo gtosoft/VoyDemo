@@ -503,7 +503,7 @@ public class MainActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
     	// page 01 TODO: make an wire-frame icon for each page representing what that page offers. 
-		MenuItem itemPageOne = menu.add("Page-1");
+		MenuItem itemPageOne = menu.add("Status");
 		itemPageOne.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
@@ -513,7 +513,7 @@ public class MainActivity extends Activity {
 		});
 
     	// page 02 TODO: make an wire-frame icon for each page representing what that page offers. 
-		MenuItem itemPageTwo = menu.add("Page-2");
+		MenuItem itemPageTwo = menu.add("Chart");
 		itemPageTwo.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {

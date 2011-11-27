@@ -3,6 +3,12 @@
 <!--  Page02: A Big aiChart showing live data. -->
 
 <RelativeLayout android:id="@+id/p02rl1" android:layout_height="fill_parent" android:layout_width="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android">
-	<TextView android:text="Page02: TODO: Add cool stuff!" android:layout_height="wrap_content" android:layout_width="wrap_content" />
+	<com.artfulbits.aiCharts.ChartView 
+		android:id="@+id/p02cv1" 
+		android:background="@android:drawable/alert_dark_frame" 
+		chart="@xml/shortchart"
+		android:layout_width="fill_parent" 
+		android:layout_height="fill_parent"
+	/>
 	
 </RelativeLayout>
