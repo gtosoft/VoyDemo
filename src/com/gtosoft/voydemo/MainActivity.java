@@ -1,19 +1,16 @@
 package com.gtosoft.voydemo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.widget.ListView;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.TextView;
 
 import com.artfulbits.aiCharts.ChartView;
-import com.artfulbits.aiCharts.Base.ChartAxis.LabelsMode;
-import com.artfulbits.aiCharts.Base.ChartPoint;
 import com.artfulbits.aiCharts.Base.ChartPointCollection;
 import com.artfulbits.aiCharts.Base.ChartSeries;
 import com.gtosoft.libvoyager.android.ActivityHelper;
@@ -24,9 +21,12 @@ import com.gtosoft.libvoyager.util.EasyTime;
 import com.gtosoft.libvoyager.util.EventCallback;
 import com.gtosoft.libvoyager.util.GeneralStats;
 import com.gtosoft.libvoyager.util.OOBMessageTypes;
+import com.gtosoft.libvoyager.view.MyViewFlipper;
 
 
 public class MainActivity extends Activity {
+	MyViewFlipper mvFlipper;
+
 	// we'll use this handler to post screen related updates to the main thread. 
 	Handler muiHandler = new Handler();
 	
@@ -57,18 +57,25 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        tvMessages = (TextView) findViewById(R.id.tvMessages);
-        
+        if (DEBUG) msg("Startup 1");
+        setContentView(R.layout.flippages);
+        if (DEBUG) msg("Startup 2");
+
+        // assign views
+        tvMessages = (TextView) findViewById(R.id.p01tv1);
+        mvFlipper = (MyViewFlipper) findViewById(R.id.vFlipper);
+        if (DEBUG) msg("Startup 3");
+
         aHelper = new ActivityHelper(this);
         // Register with libvoyager to receive "we found an ELM device nearby" message so when we perform a discovery, this method gets called.
         aHelper.registerChosenDeviceCallback(chosenCallback);
         // in the onResume method we will make the call to ActivityHelper to actually kick off the bluetooth discovery.
         
 //        chartAdapter = new ChartAdapter(this, R.layout.chartlistitem, chartArray);
-        
-        ListView lv = (ListView) findViewById(R.id.lvCharts);
+
+//        ListView lv = (ListView) findViewById(R.id.lvCharts);
 //        lv.setAdapter(chartAdapter);
+        if (DEBUG) msg("Startup DONE");
     }
     
 
@@ -490,8 +497,46 @@ public class MainActivity extends Activity {
 //		}
 //	});
 //}
+    
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 
-	
-	
+    	// page 01 TODO: make an wire-frame icon for each page representing what that page offers. 
+		MenuItem itemPageOne = menu.add("Page-1");
+		itemPageOne.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				mvFlipper.setvFlipperPage(0);
+				return false;
+			}
+		});
+
+    	// page 02 TODO: make an wire-frame icon for each page representing what that page offers. 
+		MenuItem itemPageTwo = menu.add("Page-2");
+		itemPageTwo.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				mvFlipper.setvFlipperPage(1);
+				return false;
+			}
+		});
+
+		
+    	// page 01 TODO: make an wire-frame icon for each page representing what that page offers. 
+		MenuItem itemPageThree = menu.add("Page-3");
+		itemPageThree.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				mvFlipper.setvFlipperPage(2);
+				return false;
+			}
+		});
+    	
+    	
+    	return super.onCreateOptionsMenu(menu);
+    }
+
+
 	
 } // end of class.

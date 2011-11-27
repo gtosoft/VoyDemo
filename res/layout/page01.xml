@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--  Page 01: status data. -->
+
+<RelativeLayout android:id="@+id/p01rl1" android:layout_height="fill_parent" android:layout_width="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android">
+	<ScrollView android:layout_height="fill_parent" android:layout_width="fill_parent" >
+		<TextView android:id="@+id/p01tv1" android:text="" android:layout_height="fill_parent" android:layout_width="fill_parent" />
+	</ScrollView>
+</RelativeLayout>

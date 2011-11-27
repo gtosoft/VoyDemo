@@ -1,0 +1,19 @@
+<com.gtosoft.libvoyager.view.MyViewFlipper
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/vFlipper" 
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content"
+        >
+
+
+        <!--  Page 01 -->
+                <include android:id="@+id/flipperPage01" layout="@layout/page01" />
+        
+        <!--  Page 02 -->
+                <include android:id="@+id/flipperPage02" layout="@layout/page02" />
+
+        <!--  Page 03 -->
+                <include android:id="@+id/flipperPage03" layout="@layout/page03" />
+        
+        
+</com.gtosoft.libvoyager.view.MyViewFlipper>
