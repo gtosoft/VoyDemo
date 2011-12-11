@@ -231,6 +231,7 @@ public class MainActivity extends Activity {
 		} else {
 			// Bluetooth just disconnected. ELMBT will try to reconnect a preset
 			// number of times, at a preset interval.
+			// TODO: Kill the auto detect routine in case it started and is still in progress. 
 		}
 	}
 
@@ -270,19 +271,6 @@ public class MainActivity extends Activity {
 						break;
 				}
 
-				if (hs.isDetectionValid() == true) {
-					msg("Detection was successful, switching to OBD mode and adding a few datapoints to the scan...");
-					// switch to OBD mode.
-					hs.setActiveSession(HybridSession.SESSION_TYPE_OBD2);
-
-					// start with a clean slate
-					hs.getRoutineScan().removeAllDPNs();
-					// add speed and RPM to the routinescan. Routinescan will
-					// continuously request PIDs and as they are decoded, the
-					// DPDecoded event will fire.
-					hs.getRoutineScan().addDPN("SPEED");
-					hs.getRoutineScan().addDPN("RPM");
-				}
 
 				msg("Session detection complete. result="
 						+ hs.getCapabilitiesString());
@@ -325,8 +313,7 @@ public class MainActivity extends Activity {
 					newState = Integer.valueOf(dataValue);
 					ioStateChanged(newState);
 				} catch (Exception e) {
-					msg("ERROR: Could not interpret new state as string: "
-							+ dataValue + " E=" + e.getMessage());
+					msg("ERROR: Could not interpret new state as string: " + dataValue + " E=" + e.getMessage());
 				}
 			}// end of "if this was a io state change".
 
@@ -369,31 +356,58 @@ public class MainActivity extends Activity {
 			if (dataName.equals(OOBMessageTypes.AUTODETECT_SUMMARY)) {
 				if (hs.isDetectionValid() != true)
 					return;
-
-				if (hs.isHardwareSniffable() == true) {
-					msg ("Monitor is supported! Switching to monitor mode.");
-					hs.setActiveSession(HybridSession.SESSION_TYPE_MONITOR);
-					// at this point, monitor mode is active and it will automatically detect the network if available. 
-					
-				} else {
-					msg ("Monitor mode not supported so we'll enable OBD2 scanning.");
-					
-					// switch to OBD2 communications mode
-					hs.setActiveSession(HybridSession.SESSION_TYPE_OBD2);
-					
-					// sanity check
-					if (hs.getRoutineScan() == null) return;
-
-					// add one or more datapoints to the routine scan class so that it actively scans that PID to generate DPN arrived events. 
-					hs.getRoutineScan().addDPN("RPM");
-				}
-					
-					
 				
+				SetupSessionBasedOnCapabilities();
 			}// end of "if this is a autodetect summary"
 		}// end of OOB event arrived handler function definition. 
 	};// end of event handler definition. 
 
+
+	/**
+	 * Call this method upon connecting. We'll see what the capabilities are and set up the appropriate session.  
+	 */
+	private void SetupSessionBasedOnCapabilities() {
+		
+		if (hs.isDetectionValid() != true) {
+			return;
+		}
+		
+		if (hs.isHardwareSniffable() == true) {
+			msg ("Monitor is supported! Switching to monitor mode.");
+			hs.setActiveSession(HybridSession.SESSION_TYPE_MONITOR);
+			// at this point, monitor mode is active and it will automatically detect the network if available. 
+			
+		} else {
+			msg ("Monitor mode not supported so we'll enable OBD2 scanning.");
+			
+			// switch to OBD2 communications mode
+			hs.setActiveSession(HybridSession.SESSION_TYPE_OBD2);
+			
+			// sanity check
+			if (hs.getRoutineScan() == null) return;
+
+			// add one or more datapoints to the routine scan class so that it actively scans that PID to generate DPN arrived events. 
+			hs.getRoutineScan().addDPN("RPM");
+		}
+			
+//		// OBD2? 
+//		if (hs.isDetectionValid() == true) {
+//			msg("Detection was successful, switching to OBD mode and adding a few datapoints to the scan...");
+//			// switch to OBD mode.
+//			hs.setActiveSession(HybridSession.SESSION_TYPE_OBD2);
+//
+//			// start with a clean slate
+//			hs.getRoutineScan().removeAllDPNs();
+//			// add speed and RPM to the routinescan. Routinescan will
+//			// continuously request PIDs and as they are decoded, the
+//			// DPDecoded event will fire.
+//			hs.getRoutineScan().addDPN("SPEED");
+//			hs.getRoutineScan().addDPN("RPM");
+//		}
+
+	}
+	
+	
 	/**
 	 * @return - a reference to our generalstats object, which will also contain
 	 *         all the stats of our children classes.
