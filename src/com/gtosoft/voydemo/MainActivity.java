@@ -337,18 +337,20 @@ public class MainActivity extends Activity {
 					return;
 				}
 
-				// just connected?
-				if (newState >= OBD2Session.STATE_OBDCONNECTED) {
-					msg("Just connected - adding SPEED DPN to routinescan.");
-
-					// Add some datapoints to the "routine scan" which is an
-					// automatic loop that continuously scans those PIDs.
-					hs.getRoutineScan().addDPN("SPEED");
-					hs.getRoutineScan().addDPN("RPM");
-				} else {
-					msg("Just disconnected. removing all DPNs from routinescan.");
-					hs.getRoutineScan().removeAllDPNs();
+				// just connected? OBD mode?
+				if (hs != null && hs.getRoutineScan() != null) {
+					if (newState >= OBD2Session.STATE_OBDCONNECTED) {
+						msg("Just connected - adding SPEED DPN to routinescan.");
+						// Add some datapoints to the "routine scan" which is an
+						// automatic loop that continuously scans those PIDs.
+						hs.getRoutineScan().addDPN("SPEED");
+						hs.getRoutineScan().addDPN("RPM");
+					} else {
+						msg("Just disconnected. removing all DPNs from routinescan.");
+						hs.getRoutineScan().removeAllDPNs();
+					}
 				}
+				
 
 			}// end of session state change handler.
 
